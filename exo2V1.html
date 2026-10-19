@@ -1,0 +1,30 @@
+<script src="jquery.js"></script>
+
+<style>
+
+</style>
+
+<script>
+    function toggleShow() {
+        //  Afficher/Cacher #contenu
+        $("#contenu").toggle();
+
+        // mettre à jour la value du bouton
+        if ($("input").val() == "Cacher") {$("input").val("Afficher")} else {
+            $("input").val("Cacher")
+        }
+
+
+    }
+</script>
+
+<body>
+    <input type="button" onclick="toggleShow()" value="Cacher" />
+
+    <div id="contenu">
+        <p>Paragraphe 1</p>
+        <p>Paragraphe 2</p>
+        <p>Paragraphe 3</p>
+    </div>
+    <input type="button" onclick="toggleShow()" value="Cacher" />
+</body>
