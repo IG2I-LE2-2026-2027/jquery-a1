@@ -1,0 +1,118 @@
+<script src="jquery.js"></script>
+
+<style>
+    .controle {
+        display: none;
+    }
+
+    #contenu p {
+        padding: 2px;
+    }
+
+    #contenu.modeEdition p:hover {
+        cursor: pointer;
+        border: 1px solid black;
+    }
+</style>
+
+<script>
+    // Créer un etat 
+    var modeEdition = false;
+
+    // Créer un paragraphe
+    function creerParagraphe(texte) {
+        return $("<p>").text(texte);
+    }
+
+    // Créer la barre de controle
+    function creerBarre(position) {
+        var jBascule = $("<input type='button'>")
+            .addClass("basculeMode")
+            .val("Passer en mode edition");
+
+        var jChamp = $("<input type='text'>")
+            .addClass("controle");
+
+        var jPlus = $("<input type='button'>")
+            .addClass("controle")
+            .val("+");
+
+        jBascule.on("click", basculerMode);
+
+        jPlus.on("click", function () {
+            var text = jChamp.val(); // jChamp capturé
+
+            if (text.trim() === "") return;
+
+            var jP = creerParagraphe(text);
+
+            if (position === "haut")
+                $("#contenu").prepend(jP); // avant les paragraphes existants
+            else
+                $("#contenu").append(jP); // après les paragraphes existants
+
+            jChamp.val("");
+        });
+
+        return $("<div>").append(jBascule, jChamp, jPlus);
+    }
+
+    // Comportement global
+    function basculerMode() {
+        modeEdition = !modeEdition;
+        $(".controle").toggle(modeEdition);
+        $("#contenu").toggleClass("modeEdition", modeEdition);
+        $(".basculeMode").val(modeEdition ? "Quitter le mode edition" : "Passer en mode edition");
+    }
+
+    // Assembler le tout
+    //Essai 1
+    // $(function () { // Attend que le DOM soit prêt
+    //     var jContenu = $("#contenu"); // sélectionne un élément par son ID et on crée
+    //     // l'objet jQuery qui lui est associé
+    //     var b = creerBarre("haut");
+    //     jContenu.before($("<div>").addClass("controle").text("Mode Edition"));
+    //     jContenu.before(b);
+    //     jContenu.after(b); // Dans ce cas b quitte le haut et passe en bas
+    // });
+
+    // Essai 2: Nous avons bien 2 barres mais le bouton
+    // copié ne fais rien, car copie sans gestionnaires d'événements
+    // $(function () { // Attend que le DOM soit prêt
+    //     var jContenu = $("#contenu"); // sélectionne un élément par son ID et on crée
+    //     // l'objet jQuery qui lui est associé
+    //     var b = creerBarre("haut");
+    //     jContenu.before($("<div>").addClass("controle").text("Mode Edition"));
+    //     jContenu.before(b);
+    //     jContenu.after(b.clone());
+    // });
+
+    // Essai 3: Les boutons réagissent mais avec des défauts
+    // la barre de bas lit le champ texte de la barre du haut
+    // (la fermeture point vers le jChamp de l'original)
+    // il insère en début de liste, car position vaut encore "haut"
+    // $(function () { // Attend que le DOM soit prêt
+    //     var jContenu = $("#contenu"); // sélectionne un élément par son ID et on crée
+    //     // l'objet jQuery qui lui est associé
+    //     var b = creerBarre("haut");
+    //     jContenu.before($("<div>").addClass("controle").text("Mode Edition"));
+    //     jContenu.before(b);
+    //     jContenu.after(b.clone(true));
+    // });
+
+    $(function () { // Attend que le DOM soit prêt
+        var jContenu = $("#contenu"); // sélectionne un élément par son ID et on crée
+        // l'objet jQuery qui lui est associé
+        jContenu.before($("<div>").addClass("controle").text("Mode Edition"));
+        jContenu.before(creerBarre("haut")); // insérer la barre avant
+        jContenu.after(creerBarre("bas")); // insérer la barre après
+    });
+</script>
+
+<body>
+    <div id="contenu">
+        <p>Paragraphe 1</p>
+        <p>Paragraphe 2</p>
+        <p>Paragraphe 3</p>
+    </div>
+</body>
