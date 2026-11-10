@@ -1,36 +1,49 @@
 <script src="jquery.js"></script>
 
 <style>
+    .controle {
+        display: none;
+    }
 
+    #contenu p {
+        padding: 2px;
+    }
+
+    #contenu.modeEdition p:hover {
+        cursor: pointer;
+        border: 1px solid black;
+    }
 </style>
 
 <script>
     function toggleShow() {
         //  Afficher/Cacher #contenu
-        $("#contenu").toggle();
+        $(".controle").toggle();
+        $("#contenu").toggleClass("modeEdition");
 
         // mettre à jour la value du bouton
-        if ($("input").val() == "Cacher") {$("input").val("Afficher")} else {
-            $("input").val("Cacher")
+        if ($("#contenu").hasClass("modeEdition")) {
+            $("input[value='Passer en mode edition']").val("Quitter le mode edition");
         }
-
-
+        else {
+            $("input[value='Quitter le mode edition']").val("Passer en mode edition");
+        }
     }
 </script>
 
 <body>
-    <input type="button" onclick="toggleShow()" value="Passer en mode édition" />
-
+    <div class="controle"> Mode Edition </div>
+    <input type="button" onclick="toggleShow();" value="Passer en mode edition" />
     <input type="text" class="controle" />
-    <input type="button" value="+"  class="controle"  onclick=""/> 
+    <input type="button" value="+" class="controle" onclick="" />
 
     <div id="contenu">
         <p>Paragraphe 1</p>
         <p>Paragraphe 2</p>
         <p>Paragraphe 3</p>
     </div>
-    <input type="button" onclick="toggleShow()" value="Passer en mode édition" />
 
+    <input type="button" onclick="toggleShow();" value="Passer en mode edition" />
     <input type="text" class="controle" />
-    <input type="button" value="+"  class="controle"  onclick=""/> 
+    <input type="button" value="+" class="controle" onclick="" />
 </body>
